@@ -47,3 +47,4 @@ def filter_numbers(numbers, filter_type):
         return list(filter(lambda x: x % 2 == 0, numbers))
     if filter_type == PRIME:
         return list(filter(is_prime, numbers))
+    raise ValueError(f"Unsupported value of filter_type: {filter_type}")
