@@ -12,25 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Use `make docker-start` to start the app
-"""
-
-from fastapi import FastAPI
-from fastapi.responses import RedirectResponse
-
-import recipes
-
-app = FastAPI()
-
-app.include_router(recipes.router, prefix="/recipes")
-
-
-@app.get("/")
-def root():
-    return RedirectResponse("/ping")
-
-
-@app.get("/ping")
-def ping():
-    return {"message": "pong"}
+from .handlers import router

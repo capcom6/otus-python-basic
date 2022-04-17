@@ -12,25 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Use `make docker-start` to start the app
-"""
-
-from fastapi import FastAPI
-from fastapi.responses import RedirectResponse
-
-import recipes
-
-app = FastAPI()
-
-app.include_router(recipes.router, prefix="/recipes")
+from pydantic import UUID4, BaseModel, Field
 
 
-@app.get("/")
-def root():
-    return RedirectResponse("/ping")
+class Ingredient(BaseModel):
+    uuid: UUID4
+    name: str
 
 
-@app.get("/ping")
-def ping():
-    return {"message": "pong"}
+class RecipeIngredient(BaseModel):
+    ingredient: Ingredient
+    quantity: float
+    measure_name: str
+
+
+class RecipeIn(BaseModel):
+    """Рецепт"""
+
+    name: str = Field(description="Наименование")
+    ingredients: list[RecipeIngredient] = Field(description="Ингредиенты")
+
+
+class Recipe(RecipeIn):
+    """Рецепт"""
+
+    uuid: UUID4 = Field(description="Уникальный идентификатор")
