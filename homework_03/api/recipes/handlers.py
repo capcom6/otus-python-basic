@@ -64,3 +64,10 @@ def post(item: RecipeIn):
     recipes[uuid] = recipe
 
     return recipe
+
+
+@router.delete("/{uuid}", status_code=http.HTTPStatus.NO_CONTENT)
+def delete(uuid: UUID):
+    if uuid in recipes:
+        recipes.pop(uuid)
+    return Response(status_code=http.HTTPStatus.NO_CONTENT)
