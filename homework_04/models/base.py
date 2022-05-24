@@ -24,7 +24,7 @@ from sqlalchemy.orm import declared_attr, declarative_base, sessionmaker
 
 PG_CONN_URI = (
     os.environ.get("SQLALCHEMY_PG_CONN_URI")
-    or "postgresql+asyncpg://postgres:password@localhost/postgres"
+    or "postgresql+asyncpg://postgres:root@localhost/postgres"
 )
 
 
