@@ -14,12 +14,26 @@
 """
 
 
+import asyncio
+
+from models import User, Post
+from models.base import engine, Base
+from jsonplaceholder_requests import get_posts, get_users
+
+
+async def create_tables():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(Base.metadata.create_all)
+
+
 async def async_main():
-    pass
+    await create_tables()
+    users, posts = await asyncio.gather(get_users(), get_posts())
 
 
 def main():
-    pass
+    asyncio.run(async_main())
 
 
 if __name__ == "__main__":
