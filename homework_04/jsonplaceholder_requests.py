@@ -3,6 +3,8 @@
 """
 
 
+import asyncio
+import time
 import aiohttp
 
 
@@ -11,7 +13,7 @@ POSTS_DATA_URL = "https://jsonplaceholder.typicode.com/posts"
 
 
 async def fetch_json(url: str):
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(5.0)) as session:
         async with session.get(url) as response:
             return await response.json()
 
@@ -24,10 +26,11 @@ async def get_posts():
     return await fetch_json(POSTS_DATA_URL)
 
 
-# async def main():
-#     start = time()
-#     users, posts = await asyncio.gather(get_users(), get_posts())
-#     print(len(users), len(posts), time() - start)
+async def main():
+    start = time()
+    users, posts = await asyncio.gather(get_users(), get_posts())
+    print(len(users), len(posts), time() - start)
 
 
-# asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())

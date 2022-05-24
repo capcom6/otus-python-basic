@@ -16,7 +16,7 @@
 
 import asyncio
 
-from models import User, Post
+from models import User, Post, Session
 from models.base import engine, Base
 from jsonplaceholder_requests import get_posts, get_users
 
@@ -27,9 +27,46 @@ async def create_tables():
         await conn.run_sync(Base.metadata.create_all)
 
 
+async def get_data():
+    return await asyncio.gather(get_users(), get_posts())
+
+
+def convert_users(users: list[dict]) -> list[User]:
+    return [
+        User(
+            id=item["id"],
+            name=item["name"],
+            username=item["username"],
+            email=item["email"],
+        )
+        for item in users
+    ]
+
+
+def convert_posts(posts: list[dict]) -> list[Post]:
+    return [
+        Post(
+            id=item["id"],
+            user_id=item["userId"],
+            title=item["title"],
+            body=item["body"],
+        )
+        for item in posts
+    ]
+
+
+async def write_to_db(entities):
+    async with Session() as session:
+        async with session.begin():
+            session.add_all(entities)
+
+
 async def async_main():
     await create_tables()
-    users, posts = await asyncio.gather(get_users(), get_posts())
+    users_data, posts_data = await get_data()
+    users, posts = convert_users(users_data), convert_posts(posts_data)
+    await write_to_db(users + posts)
+    await engine.dispose()
 
 
 def main():

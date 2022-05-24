@@ -12,10 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__all__ = (
-    "User",
-    "Post",
-)
+__all__ = ("User", "Post", "Session")
 
+from .base import async_session as Session
 from .user import User
 from .post import Post

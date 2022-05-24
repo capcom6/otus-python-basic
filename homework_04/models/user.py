@@ -27,3 +27,6 @@ class User(Base):
     email = Column(String, unique=True)
 
     posts = relationship("Post", back_populates="user")
+
+    def __str__(self) -> str:
+        return f"User: {self.name}"

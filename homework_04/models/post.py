@@ -16,6 +16,8 @@ from sqlalchemy import (
     Column,
     Integer,
     ForeignKey,
+    String,
+    Text,
 )
 from sqlalchemy.orm import relationship
 
@@ -26,4 +28,9 @@ class Post(Base):
     __tablename__ = "posts"
 
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    title = Column(String, nullable=False)
+    body = Column(Text, nullable=False)
     user = relationship("User", back_populates="posts")
+
+    def __str__(self) -> str:
+        return f"Post: {self.title}"
