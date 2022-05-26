@@ -1,0 +1,5 @@
+aiodns==3.0.0
+aiohttp==3.8.1
+SQLAlchemy==1.4.36
+greenlet==1.1.2
+asyncpg==0.25.0

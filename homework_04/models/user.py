@@ -11,3 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+from sqlalchemy import (
+    Column,
+    String,
+)
+from sqlalchemy.orm import relationship
+
+from .base import Base
+
+
+class User(Base):
+    name = Column(String)
+    username = Column(String, unique=True)
+    email = Column(String, unique=True)
+
+    posts = relationship("Post", back_populates="user")
+
+    def __str__(self) -> str:
+        return f"User: {self.name}"
