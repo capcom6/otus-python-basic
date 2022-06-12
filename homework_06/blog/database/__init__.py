@@ -14,5 +14,6 @@
 
 from .db import db
 from .models import User, Post
+from .queries import users_get, users_select, posts_select
 
-__ALL__ = ["db", "User", "Post"]
+__ALL__ = ["db", "User", "Post", "users_select", "posts_select", "users_get"]

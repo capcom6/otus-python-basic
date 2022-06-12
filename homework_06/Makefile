@@ -18,10 +18,10 @@ init:
 init-dev: init
 	pip install -r requirements-dev.txt
 
-run-dev:
+start-dev:
 	FLASK_APP=blog.app flask run -p 8000
 
-run:
+start:
 	gunicorn -w 4 -b 0.0.0.0:8000 --access-logfile=- blog:app
 
 db-upgrade:

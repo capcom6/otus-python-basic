@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Users
+{% endblock %}
+
+{% block body %}
+<h1>Users</h1>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for user in users %}
+
+    <div class="col">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ user.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ user.username }}</h6>
+
+                <a href="{{ url_for('blog.posts', user_id=user.id) }}" class="btn btn-primary">Posts</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

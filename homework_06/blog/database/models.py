@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sqlalchemy import Column, ForeignKey, Integer, String, Text
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text, func
 from .db import db
 
 
@@ -29,6 +29,14 @@ class User(IdMixin, db.Model):
 
     posts = db.relationship("Post", back_populates="user")
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "username": self.username,
+            "email": self.email,
+        }
+
     def __str__(self) -> str:
         return f"User: {self.name}"
 
@@ -39,7 +47,19 @@ class Post(IdMixin, db.Model):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     title = Column(String, nullable=False)
     body = Column(Text, nullable=False)
+    created_at = Column(
+        DateTime, nullable=False, default=func.now(), server_default=func.now()
+    )
     user = db.relationship("User", back_populates="posts")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "title": self.title,
+            "body": self.body,
+            "created_at": self.created_at.isoformat(),
+        }
 
     def __str__(self) -> str:
         return f"Post: {self.title}"
