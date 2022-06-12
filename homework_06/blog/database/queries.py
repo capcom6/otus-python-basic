@@ -15,6 +15,7 @@
 from sqlalchemy.orm import joinedload
 from typing import List, Union
 from .models import Post, User
+from .db import db
 
 
 def users_select() -> List[User]:
@@ -45,3 +46,10 @@ def posts_select(
         query = query.limit(limit)
 
     return query.all()
+
+
+def posts_create(*, user_id: int, title: str, body: str) -> Post:
+    post = Post(user_id=user_id, title=title, body=body)  # type: ignore
+    db.session.add(post)
+    db.session.commit()
+    return post

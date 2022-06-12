@@ -12,16 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .db import db
-from .models import User, Post
-from .queries import users_get, users_select, posts_select, posts_create
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, TextAreaField, IntegerField
+from wtforms.validators import DataRequired, Length
 
-__ALL__ = [
-    "db",
-    "User",
-    "Post",
-    "users_select",
-    "posts_select",
-    "users_get",
-    "posts_create",
-]
+
+class PostForm(FlaskForm):
+    title = StringField("Title", validators=[DataRequired(), Length(min=1, max=255)])
+    body = TextAreaField("Body", validators=[DataRequired()])
+    user_id = IntegerField("User Id", validators=[DataRequired()])

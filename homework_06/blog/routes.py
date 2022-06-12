@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from flask import Blueprint, jsonify, render_template, request
+from flask import Blueprint, flash, jsonify, redirect, render_template, request, url_for
 
 import blog.database as db
+from blog.forms import PostForm
 
 bp = Blueprint("blog", __name__)
 
@@ -25,22 +26,16 @@ def index():
 
     return render_template("index.html", posts=last_posts)
 
-    # return jsonify(
-    #     {
-    #         "users": [user.to_dict() for user in users_select()],
-    #         "posts": [post.to_dict() for post in posts_select(limit=5)],
-    #     }
-    # )
-
 
 @bp.get("/users")
 def users():
     return render_template("users.html", users=db.users_select())
 
 
-@bp.get("/posts")
+@bp.route("/posts", methods=["GET", "POST"])
 def posts():
-    user = None
+    form = PostForm()
+    user_id = None
     if "user_id" in request.args:
         user_id = int(request.args["user_id"])
         if user_id <= 0:
@@ -50,17 +45,30 @@ def posts():
                 ),
                 400,
             )
+
+    if request.method == "POST":
+        user_id = form.user_id.data
+        if form.validate_on_submit():
+            db.posts_create(
+                user_id=form.user_id.data, title=form.title.data, body=form.body.data  # type: ignore
+            )
+            flash("Post created", "info")
+            return redirect(url_for("blog.posts", user_id=form.user_id.data))
+
+    user = None
+    if user_id:
         user = db.users_get(user_id)
         if user is None:
             return (
                 render_template(
-                    "error.html", message="User with id {} not found".format(user_id)
+                    "error.html",
+                    message="User with id {} not found".format(user_id),
                 ),
                 404,
             )
-
+        form.user_id.data = user_id
         posts = db.posts_select(user_id=user_id)
     else:
         posts = db.posts_select()
 
-    return render_template("posts.html", posts=posts, user=user)
+    return render_template("posts.html", posts=posts, user=user, form=form)
