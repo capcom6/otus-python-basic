@@ -27,4 +27,10 @@ start:
 db-upgrade:
 	FLASK_APP=blog.app flask db upgrade
 
+docker-start: docker-build
+	docker compose up --build
+
+docker-build:
+	docker build . -t homework_06
+
 .PHONY: init init-dev run-dev
