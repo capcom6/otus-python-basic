@@ -27,7 +27,7 @@ start:
 db-upgrade:
 	FLASK_APP=blog.app flask db upgrade
 
-docker-start: docker-build
+docker-start:
 	docker compose up --build
 
 docker-build:
