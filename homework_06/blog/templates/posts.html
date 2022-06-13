@@ -23,18 +23,6 @@ Home
     </div>
     {{ form.user_id(type="hidden") }}
 
-
-    <!--Flash messages-->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category }}" role="alert">
-        {{ message }}
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-
     {% if form.errors %}
     <div class="errors my-2">
         {% for name, errors in form.errors.items() %}
@@ -52,7 +40,7 @@ Home
     </div>
     {% endif %}
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Add</button>
 </form>
 {% endif %}
 

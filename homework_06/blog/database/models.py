@@ -29,6 +29,12 @@ class User(IdMixin, db.Model):
 
     posts = db.relationship("Post", back_populates="user")
 
+    def __init__(self, *, name: str, username: str, email: str) -> None:
+        super().__init__()
+        self.name = name
+        self.username = username
+        self.email = email
+
     def to_dict(self):
         return {
             "id": self.id,

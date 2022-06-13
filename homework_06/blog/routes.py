@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from flask import Blueprint, flash, jsonify, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 import blog.database as db
-from blog.forms import PostForm
+from blog.forms import PostForm, UserForm
 
 bp = Blueprint("blog", __name__)
 
@@ -27,9 +27,22 @@ def index():
     return render_template("index.html", posts=last_posts)
 
 
-@bp.get("/users")
+@bp.route("/users", methods=["GET", "POST"])
 def users():
-    return render_template("users.html", users=db.users_select())
+    form = UserForm()
+    if request.method == "POST":
+        if form.validate_on_submit():
+            if db.users_exists(username=form.username.data, email=form.email.data):
+                flash("User with such username or email already exists", "warning")
+            else:
+                db.users_create(
+                    name=form.name.data,
+                    username=form.username.data,
+                    email=form.email.data,
+                )
+                flash("User created", "info")
+
+    return render_template("users.html", users=db.users_select(), form=form)
 
 
 @bp.route("/posts", methods=["GET", "POST"])

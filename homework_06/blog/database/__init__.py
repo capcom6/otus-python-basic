@@ -14,7 +14,14 @@
 
 from .db import db
 from .models import User, Post
-from .queries import users_get, users_select, posts_select, posts_create
+from .queries import (
+    users_get,
+    users_select,
+    posts_select,
+    posts_create,
+    users_create,
+    users_exists,
+)
 
 __ALL__ = [
     "db",
@@ -24,4 +31,6 @@ __ALL__ = [
     "posts_select",
     "users_get",
     "posts_create",
+    "users_create",
+    "users_exists",
 ]

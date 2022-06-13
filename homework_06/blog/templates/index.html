@@ -8,6 +8,12 @@ Home
 <h1>Last posts</h1>
 <p>Welcome to blog home page!</p>
 
+{% if not posts %}
+<p>No posts yet!</p>
+<p>Add <a href="{{ url_for('blog.users') }}">user</a> and then create <a href="{{ url_for('blog.posts') }}">posts</a>!
+</p>
+{% endif %}
+
 {% for post in posts %}
 <div class="card mb-3">
     <div class="card-body">

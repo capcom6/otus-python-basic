@@ -22,8 +22,22 @@ def users_select() -> List[User]:
     return User.query.all()
 
 
+def users_exists(*, username: str, email: str) -> bool:
+    return (
+        User.query.filter(User.username == username or User.email == email).first()
+        is not None
+    )
+
+
 def users_get(user_id: int) -> Union[User, None]:
     return User.query.get(user_id)
+
+
+def users_create(*, name: str, username: str, email: str) -> User:
+    user = User(name=name, username=username, email=email)
+    db.session.add(user)
+    db.session.commit()
+    return user
 
 
 def posts_select(
