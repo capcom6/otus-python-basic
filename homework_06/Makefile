@@ -33,4 +33,4 @@ docker-start: docker-build
 docker-build:
 	docker build . -t homework_06
 
-.PHONY: init init-dev run-dev
+.PHONY: init init-dev start-dev start db-upgrade docker-start docker-build
