@@ -23,6 +23,9 @@ services:
     depends_on:
       pg:
         condition: service_healthy
+    deploy:
+      mode: replicated
+      replicas: 3
 
   pg:
     image: postgres:14-alpine
@@ -39,7 +42,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "pg_isready  -d $${POSTGRES_DB} -U $${POSTGRES_USER}"
+          "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"
         ]
       interval: 5s
       timeout: 5s
