@@ -23,7 +23,7 @@ from .queries import (
     users_exists,
 )
 
-__ALL__ = [
+__all__ = [
     "db",
     "User",
     "Post",
