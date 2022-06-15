@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Users
+{% endblock %}
+
+{% block body %}
+<h1>Users</h1>
+
+<form action="{{ url_for('blog.users') }}" method="POST" class="mb-3">
+    {{ form.csrf_token }}
+    <div class="form-group mb-3">
+        {{ form.name.label }}
+        {{ form.name(class="form-control") }}
+    </div>
+    <div class="form-group mb-3">
+        {{ form.username.label }}
+        {{ form.username(class="form-control", rows=3) }}
+    </div>
+    <div class="form-group mb-3">
+        {{ form.email.label }}
+        {{ form.email(class="form-control", rows=3) }}
+    </div>
+
+    {% if form.errors %}
+    <div class="errors my-2">
+        {% for name, errors in form.errors.items() %}
+        <div class="alert alert-danger">
+            {% if name %}
+            <strong>{{ name }}</strong>
+            {% endif %}
+            <ul>
+                {% for error in errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for user in users %}
+
+    <div class="col">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ user.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ user.username }}</h6>
+
+                <a href="{{ url_for('blog.posts', user_id=user.id) }}" class="btn btn-primary">Posts</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

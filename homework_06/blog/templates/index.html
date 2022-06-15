@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block body %}
+<h1>Last posts</h1>
+<p>Welcome to blog home page!</p>
+
+{% if not posts %}
+<p>No posts yet!</p>
+<p>Add <a href="{{ url_for('blog.users') }}">user</a> and then create <a href="{{ url_for('blog.posts') }}">posts</a>!
+</p>
+{% endif %}
+
+{% for post in posts %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ post.title }}</h5>
+        <p class="card-text">{{ post.text }}</p>
+        <!--Author info-->
+        <p class="card-text">
+            <small class="text-muted">
+                <a href="{{ url_for('blog.posts', user_id=post.user_id) }}">{{ post.user.name }}</a>
+            </small>
+        </p>
+        <p class="card-text"><small class="text-muted">{{ post.created_at }}</small></p>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
